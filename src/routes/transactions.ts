@@ -1,7 +1,8 @@
-import { FastifyInstance } from "fastify";
+import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { z } from "zod";
-import crypto from "crypto";
+import crypto, { randomUUID } from "crypto";
 import { knex } from "../database";
+import reply from "@fastify/cookie";
 
 // Cookies -> Formas da gente manter contexto entre requisições.
 
@@ -43,10 +44,20 @@ export async function transactionsRoutes(app: FastifyInstance) {
       request.body
     );
 
+    let sessionId = request.cookies.sessionId;
+
+    if (!sessionId) {
+      sessionId = randomUUID();
+    }
+
+    // Continuar daqui, erro no reply do fastify cookies 
+    reply
+
     await knex("transactions").insert({
       id: crypto.randomUUID(),
       title,
       amount: type === "credit" ? amount : amount * -1,
+      session_id: sessionId,
     });
 
     return response.status(201).send({ msg: "Transação concluída!" });
