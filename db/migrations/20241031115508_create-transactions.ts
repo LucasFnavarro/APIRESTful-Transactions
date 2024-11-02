@@ -2,7 +2,7 @@ import type { Knex } from "knex";
 
 export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable("transactions", (table) => {
-    table.uuid("id").primary(); // uuid = chave primaria que não se repete
+    table.uuid("id").primary(); // uuid = chave primaria que não se repete Universal Unique ID
     table.text("title").notNullable();
     table.decimal("amount", 18, 2).notNullable();
     table.timestamp("created_at").defaultTo(knex.fn.now).notNullable();
