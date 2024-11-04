@@ -88,6 +88,8 @@ export async function transactionsRoutes(app: FastifyInstance) {
       session_id: sessionId,
     });
 
-    return reply.status(201).send({ msg: "Transação concluída!" });
+    return reply
+      .status(201)
+      .send({ msg: "Transação concluída com sucesso ✔️!" });
   });
 }
